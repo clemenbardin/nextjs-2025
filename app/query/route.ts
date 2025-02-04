@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-async function getInvoices() { // Renommez la fonction pour plus de clarté (optionnel)
+async function listInvoices() { // Renommez la fonction pour plus de clarté (optionnel)
   try {
     const data = await sql`
       SELECT invoices.amount, customers.name
@@ -21,7 +21,7 @@ async function getInvoices() { // Renommez la fonction pour plus de clarté (opt
 
 export async function GET(request: Request) { // Exportez le gestionnaire GET
   try {
-    const invoices = await getInvoices();
+    const invoices = await listInvoices();
     return NextResponse.json(invoices); // Utilisez NextResponse.json pour la réponse JSON
   } catch (error) {
     return new NextResponse("Error fetching invoices", { status: 500 }); // Gestion des erreurs
