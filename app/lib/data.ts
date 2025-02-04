@@ -238,3 +238,18 @@ export async function authenticate(
     throw error;
   }
 }
+
+export async function listInvoices(sql: postgres.Sql<{}>) { // Renommez la fonction pour plus de clarté (optionnel)
+  try {
+    const data = await sql`
+      SELECT invoices.amount, customers.name
+      FROM invoices
+      JOIN customers ON invoices.customer_id = customers.id
+      WHERE invoices.amount = 666;
+    `;
+    return data;
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    return []; // Retournez un tableau vide en cas d'erreur (ou un message d'erreur plus précis)
+  }
+}
